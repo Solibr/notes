@@ -1,0 +1,39 @@
+public class Main(String[] args) {
+  /**
+   * Получается любопытный вывод, если делать синхронизацию не при описании задач потоков, а при их старте.
+   * Это выглядит, как будто синхронизация включается не сразу
+   *
+  
+  // TEST
+    public static void test() {
+        System.out.println("TEST 1. begin");
+
+        List<Thread> threads = new ArrayList<>();
+        threads.add(new Thread(() -> {
+            //synchronized (System.out) {
+
+                for (int i = 0; i < 100; i++) {
+                    System.out.print("a ");
+                    if (i % 10 == 9) {
+                        System.out.println();
+                    }
+                }
+            //}
+        }));
+        threads.add(new Thread(() -> {
+            //synchronized (System.out) {
+                for (int i = 0; i < 100; i++) {
+                    System.out.print("b ");
+                    if (i % 10 == 9) {
+                        System.out.println();
+                    }
+                }
+            //}
+        }));
+        synchronized (System.out) {
+            threads.forEach(Thread::start);
+        }
+
+        System.out.println("TEST 1. end");
+    }
+}
